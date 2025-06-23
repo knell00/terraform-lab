@@ -8,9 +8,9 @@ jobs:
   plan:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
-      - name: Configure AWS credentials
+      - name: Configure AWS creds
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
@@ -19,7 +19,7 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.8.5
-      - name: Terraform Init & Plan
+      - name: Terraform init & plan
         run: |
           cd env/dev
           terraform init -input=false \
