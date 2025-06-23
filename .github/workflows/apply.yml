@@ -1,17 +1,33 @@
 name: terraform-apply
-on: { push: { branches: [main] } }
-permissions: {id-token: write, contents: read}
+on:
+  push:
+    branches:
+      - main
+permissions:
+  id-token: write
+  contents: read
 jobs:
   apply:
     runs-on: ubuntu-latest
     environment: production
     steps:
-    - uses: actions/checkout@v4
-    - uses: aws-actions/configure-aws-credentials@v4
-      with: {role-to-assume: ${{ secrets.AWS_ROLE_ARN }}, aws-region: ${{ secrets.AWS_REGION }}}
-    - uses: hashicorp/setup-terraform@v3
-      with: {terraform_version: 1.8.5}
-    - run: |
-        cd env/dev
-        terraform init -input=false -backend-config="bucket=${{ secrets.TF_BUCKET }}" -backend-config="dynamodb_table=${{ secrets.TF_DYNAMODB_TABLE }}"
-        terraform apply -auto-approve
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.8.5
+      - name: Terraform Init & Apply
+        run: |
+          cd env/dev
+          terraform init -input=false \
+            -backend-config="bucket=${{ secrets.TF_BUCKET }}" \
+            -backend-config="dynamodb_table=${{ secrets.TF_DYNAMODB_TABLE }}"
+          terraform apply -auto-approve
+
+          #test
