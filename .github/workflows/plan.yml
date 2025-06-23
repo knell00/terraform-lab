@@ -26,3 +26,5 @@ jobs:
             -backend-config="bucket=${{ secrets.TF_BUCKET }}" \
             -backend-config="dynamodb_table=${{ secrets.TF_DYNAMODB_TABLE }}"
           terraform plan
+
+          #test
