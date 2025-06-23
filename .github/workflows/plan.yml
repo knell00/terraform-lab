@@ -1,3 +1,4 @@
+# 루트 위치라고 가정
 cat > .github/workflows/plan.yml <<'YML'
 name: terraform-plan
 
